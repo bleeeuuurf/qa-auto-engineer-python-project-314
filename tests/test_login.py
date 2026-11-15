@@ -1,23 +1,16 @@
 import pytest
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from pages.login_page import LoginPage
+
 
 @pytest.mark.smoke
 def test_login_page_smoke(browser, base_url):
-    browser.get(base_url)
+    login_page = LoginPage(browser, base_url)
+
+    login_page.open_page()
 
     assert browser.title == "Task manager"
-
-    username = browser.find_element(By.NAME, "username")
-
-    password = browser.find_element(By.NAME, "password")
-    sign_in_button = browser.find_element(
-        By.CSS_SELECTOR, "button[type='submit']"
-    )
-
-    assert username.is_displayed()
-    assert password.is_displayed()
-    assert sign_in_button.is_displayed()
-    assert sign_in_button.text == "SIGN IN"
+    assert login_page.username_is_displayed()
+    assert login_page.password_is_displayed()
+    assert login_page.sign_in_button_is_displayed()
+    assert login_page.sign_in_button_text() == "SIGN IN"
