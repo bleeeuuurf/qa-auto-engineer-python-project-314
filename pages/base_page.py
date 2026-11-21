@@ -1,6 +1,5 @@
-
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class BasePage:
@@ -43,11 +42,11 @@ class BasePage:
 
     def wait_for_attribute(self, locator, attribute, value):
         return WebDriverWait(self.browser, 5).until(
-            lambda browser: browser.find_element(
-                *locator
-            ).get_attribute(attribute) == value
+            lambda browser: (
+                browser.find_element(*locator).get_attribute(attribute) == value
+            )
         )
-    
+
     def find_visible_elements(self, locator):
         return WebDriverWait(self.browser, 5).until(
             EC.visibility_of_all_elements_located(locator)

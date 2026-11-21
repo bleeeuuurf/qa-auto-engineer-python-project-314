@@ -1,11 +1,8 @@
 import pytest
+from conftest import PASSWORD, USERNAME
 
-from selenium.webdriver.common.by import By
-
-from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
-
-from conftest import USERNAME, PASSWORD
+from pages.login_page import LoginPage
 
 
 @pytest.mark.smoke
@@ -22,8 +19,9 @@ def test_success_login(browser, base_url):
 @pytest.mark.smoke
 def test_success_logout(logged_in_user):
     dashboard_page = DashboardPage(logged_in_user)
+    login_page = LoginPage(logged_in_user)
 
     dashboard_page.logout()
 
-    assert logged_in_user.find_element(By.NAME, "username").is_displayed()
-    assert logged_in_user.find_element(By.NAME, "password").is_displayed()
+    assert login_page.username_is_displayed()
+    assert login_page.password_is_displayed()

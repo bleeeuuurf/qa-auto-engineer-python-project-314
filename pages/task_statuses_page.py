@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -11,19 +10,20 @@ class TaskStatusesPage(BasePage):
     name_cells = (By.CSS_SELECTOR, "td.column-name")
     slug_cells = (By.CSS_SELECTOR, "td.column-slug")
     delete_button = (By.CSS_SELECTOR, 'button[aria-label="Delete"]')
-    deleted_notification = (
-        By.XPATH,
-        "//*[@role='alert' and contains(., 'deleted')]"
-    )
+    deleted_notification = (By.XPATH, "//*[@role='alert' and contains(., 'deleted')]")
     select_all_checkbox = (
         By.XPATH,
-        "//input[@aria-label='Select all']"
-        "/ancestor::span[contains(@class, 'MuiCheckbox-root')]"
+        (
+            "//input[@aria-label='Select all']"
+            "/ancestor::span[contains(@class, 'MuiCheckbox-root')]"
+        ),
     )
     empty_list_message = (
         By.XPATH,
-        "//div[contains(@class, 'RaEmpty-message')]"
-        "//p[normalize-space()='No Task statuses yet.']"
+        (
+            "//div[contains(@class, 'RaEmpty-message')]"
+            "//p[normalize-space()='No Task statuses yet.']"
+        ),
     )
 
     def open_page(self):
@@ -38,8 +38,10 @@ class TaskStatusesPage(BasePage):
     def status_is_in_table(self, name, slug):
         status_row = (
             By.XPATH,
-            f"//tr[.//*[normalize-space()='{name}']"
-            f" and .//*[normalize-space()='{slug}']]"
+            (
+                f"//tr[.//*[normalize-space()='{name}']"
+                f" and .//*[normalize-space()='{slug}']]"
+            ),
         )
         return self.is_element_visible(status_row)
 
@@ -54,17 +56,21 @@ class TaskStatusesPage(BasePage):
     def open_edit_form(self, name):
         status_row = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+            ),
         )
         self.click_element(status_row)
 
     def select_status(self, name):
         status_checkbox = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
-            f"//span[@aria-label='Select this row']"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+                f"//span[@aria-label='Select this row']"
+            ),
         )
         self.click_element(status_checkbox)
 
@@ -77,8 +83,10 @@ class TaskStatusesPage(BasePage):
     def status_is_not_in_table(self, name):
         status_row = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+            ),
         )
         return self.wait_until_invisible(status_row)
 

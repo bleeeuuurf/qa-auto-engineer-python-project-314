@@ -1,4 +1,3 @@
-
 import os
 
 import pytest
@@ -17,6 +16,7 @@ def browser():
 @pytest.fixture(scope="session")
 def base_url():
     return os.getenv("APP_BASE_URL", "http://localhost:5173").rstrip("/")
+
 
 USERNAME = "test_username"
 PASSWORD = "test_passworf"

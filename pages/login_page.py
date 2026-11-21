@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -7,8 +6,8 @@ from pages.base_page import BasePage
 class LoginPage(BasePage):
     username_input = (By.NAME, "username")
     password_input = (By.NAME, "password")
-    sign_in_button = (By.CSS_SELECTOR,"button[type='submit']")
-    users_menu_item = (By.CSS_SELECTOR,'a[href="#/users"]')
+    sign_in_button = (By.CSS_SELECTOR, "button[type='submit']")
+    users_menu_item = (By.CSS_SELECTOR, 'a[href="#/users"]')
 
     def open_page(self):
         self.open_url(self.base_url)
@@ -31,3 +30,6 @@ class LoginPage(BasePage):
 
     def sign_in_button_text(self):
         return self.get_element_text(self.sign_in_button)
+
+    def page_title(self):
+        return self.browser.title

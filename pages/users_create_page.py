@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -31,4 +30,3 @@ class UserCreatePage(BasePage):
 
     def save_user(self):
         self.click_element(self.save_button)
-

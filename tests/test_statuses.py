@@ -1,9 +1,21 @@
-import pytest
 from uuid import uuid4
 
-from pages.task_statuses_page import TaskStatusesPage
+import pytest
+
 from pages.task_status_create_page import TaskStatusCreatePage
 from pages.task_status_edit_page import TaskStatusEditPage
+from pages.task_statuses_page import TaskStatusesPage
+
+
+def create_status(statuses_page, create_page, name, slug):
+    statuses_page.open_page()
+    statuses_page.open_create_form()
+
+    create_page.fill_status_form(name, slug)
+    create_page.save_status()
+
+    assert create_page.creation_notification_is_displayed()
+
 
 @pytest.mark.smoke
 def test_statuses_page_is_opened(logged_in_user, base_url):
@@ -12,6 +24,7 @@ def test_statuses_page_is_opened(logged_in_user, base_url):
     statuses_page.open_page()
 
     assert statuses_page.table_is_loaded()
+
 
 @pytest.mark.smoke
 def test_status_create_form_is_opened(logged_in_user, base_url):
@@ -24,6 +37,7 @@ def test_status_create_form_is_opened(logged_in_user, base_url):
     assert create_page.name_is_displayed()
     assert create_page.slug_is_displayed()
 
+
 @pytest.mark.smoke
 def test_status_can_be_created(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
@@ -32,17 +46,12 @@ def test_status_can_be_created(logged_in_user, base_url):
     name = f"test status {uuid4()}"
     slug = f"test_status_{uuid4()}"
 
-    statuses_page.open_page()
-    statuses_page.open_create_form()
-
-    create_page.fill_status_form(name, slug)
-    create_page.save_status()
-
-    assert create_page.creation_notification_is_displayed()
+    create_status(statuses_page, create_page, name, slug)
 
     statuses_page.open_page()
 
     assert statuses_page.status_is_in_table(name, slug)
+
 
 @pytest.mark.smoke
 def test_statuses_table_displays_name_and_slug(logged_in_user, base_url):
@@ -67,16 +76,14 @@ def test_status_can_be_edited(logged_in_user, base_url):
     updated_name = f"Updated Status {uuid4()}"
     updated_slug = f"updated_status_{uuid4()}"
 
+    create_status(
+        statuses_page,
+        create_page,
+        original_name,
+        original_slug,
+    )
+
     statuses_page.open_page()
-    statuses_page.open_create_form()
-
-    create_page.fill_status_form(original_name, original_slug)
-    create_page.save_status()
-
-    assert create_page.creation_notification_is_displayed()
-
-    statuses_page.open_page()
-
     statuses_page.open_edit_form(original_name)
 
     assert edit_page.name_is_displayed()
@@ -85,9 +92,8 @@ def test_status_can_be_edited(logged_in_user, base_url):
     edit_page.update_status(updated_name, updated_slug)
     edit_page.save_status()
 
-    assert statuses_page.status_is_in_table(
-        updated_name, updated_slug
-    )
+    assert statuses_page.status_is_in_table(updated_name, updated_slug)
+
 
 @pytest.mark.smoke
 def test_status_can_be_deleted(logged_in_user, base_url):
@@ -97,13 +103,12 @@ def test_status_can_be_deleted(logged_in_user, base_url):
     status_name = f"Delete Status {uuid4()}"
     status_slug = f"delete_status_{uuid4()}"
 
-    statuses_page.open_page()
-    statuses_page.open_create_form()
-
-    create_page.fill_status_form(status_name, status_slug)
-    create_page.save_status()
-
-    assert create_page.creation_notification_is_displayed()
+    create_status(
+        statuses_page,
+        create_page,
+        status_name,
+        status_slug,
+    )
 
     statuses_page.open_page()
 
@@ -113,7 +118,6 @@ def test_status_can_be_deleted(logged_in_user, base_url):
     statuses_page.delete_selected_statuses()
 
     assert statuses_page.deletion_notification_is_displayed()
-
     assert statuses_page.status_is_not_in_table(status_name)
 
 
@@ -127,15 +131,10 @@ def test_multiple_statuses_can_be_deleted(logged_in_user, base_url):
         (f"Delete Status {uuid4()}", f"delete_status_{uuid4()}"),
     ]
 
-    statuses_page.open_page()
-
     for name, slug in statuses:
-        statuses_page.open_create_form()
-        create_page.fill_status_form(name, slug)
-        create_page.save_status()
+        create_status(statuses_page, create_page, name, slug)
 
-        assert create_page.creation_notification_is_displayed()
-        statuses_page.open_page()
+    statuses_page.open_page()
 
     for name, slug in statuses:
         assert statuses_page.status_is_in_table(name, slug)
@@ -147,6 +146,7 @@ def test_multiple_statuses_can_be_deleted(logged_in_user, base_url):
 
     for name, slug in statuses:
         assert statuses_page.status_is_not_in_table(name)
+
 
 @pytest.mark.smoke
 def test_all_statuses_can_be_deleted(logged_in_user, base_url):

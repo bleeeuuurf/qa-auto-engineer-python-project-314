@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -8,22 +7,23 @@ class TaskCreatePage(BasePage):
     title_input = (By.NAME, "title")
 
     assignee_combobox = (
-        By.XPATH,
-        "//div[contains(@class, 'MuiFormControl-root')"
-        "][.//label[contains(., 'Assignee')]]//*[@role='combobox']"
+        By.CSS_SELECTOR,
+        ".ra-input-assignee_id [role='combobox']",
     )
 
     status_combobox = (
         By.XPATH,
-        "//div[contains(@class, 'MuiFormControl-root')"
-        "][.//label[contains(., 'Status')]]//*[@role='combobox']"
+        (
+            "//div[contains(@class, 'MuiFormControl-root')"
+            "][.//label[contains(., 'Status')]]//*[@role='combobox']"
+        ),
     )
 
     save_button = (By.CSS_SELECTOR, 'button[aria-label="Save"]')
 
     created_notification = (
         By.XPATH,
-        "//*[@role='alert' and contains(., 'Element created')]"
+        "//*[@role='alert' and contains(., 'Element created')]",
     )
 
     def title_is_displayed(self):
@@ -43,7 +43,7 @@ class TaskCreatePage(BasePage):
 
         option_locator = (
             By.CSS_SELECTOR,
-            '[role="option"]'
+            'ul[role="listbox"] li[role="option"]',
         )
 
         first_option = self.find_visible_element(option_locator)
@@ -72,8 +72,7 @@ class TaskCreatePage(BasePage):
 
         option_locator = (
             By.XPATH,
-            f"//li[@role='option' "
-            f"and normalize-space()='{status_name}']"
+            (f"//li[@role='option' and normalize-space()='{status_name}']"),
         )
 
         self.click_element(option_locator)

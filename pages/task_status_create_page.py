@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -12,7 +11,7 @@ class TaskStatusCreatePage(BasePage):
 
     created_notification = (
         By.XPATH,
-        "//*[@role='alert' and contains(., 'Element created')]"
+        "//*[@role='alert' and contains(., 'Element created')]",
     )
 
     def name_is_displayed(self):

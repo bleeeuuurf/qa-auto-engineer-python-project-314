@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -10,10 +9,7 @@ class LabelsPage(BasePage):
     labels_table = (By.CSS_SELECTOR, "table")
     name_cells = (By.CSS_SELECTOR, "td.column-name")
     delete_button = (By.CSS_SELECTOR, 'button[aria-label="Delete"]')
-    deleted_notification = (
-        By.XPATH,
-        "//*[@role='alert' and contains(., 'deleted')]"
-    )
+    deleted_notification = (By.XPATH, "//*[@role='alert' and contains(., 'deleted')]")
 
     def open_page(self):
         self.click_element(self.labels_menu_item)
@@ -27,8 +23,10 @@ class LabelsPage(BasePage):
     def label_is_in_table(self, name):
         label_row = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+            ),
         )
         return self.is_element_visible(label_row)
 
@@ -39,18 +37,22 @@ class LabelsPage(BasePage):
     def open_edit_form(self, name):
         label_row = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+            ),
         )
         self.click_element(label_row)
 
     def select_label(self, name):
         label_checkbox = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
-            "//input[@type='checkbox']"
-            "/ancestor::span[contains(@class, 'MuiCheckbox-root')]"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+                "//input[@type='checkbox']"
+                "/ancestor::span[contains(@class, 'MuiCheckbox-root')]"
+            ),
         )
         self.click_element(label_checkbox)
 
@@ -67,7 +69,9 @@ class LabelsPage(BasePage):
     def label_is_not_in_table(self, name):
         label_row = (
             By.XPATH,
-            f"//tr[.//td[contains(@class, 'column-name') "
-            f"and normalize-space()='{name}']]"
+            (
+                f"//tr[.//td[contains(@class, 'column-name') "
+                f"and normalize-space()='{name}']]"
+            ),
         )
         return self.wait_until_invisible(label_row)

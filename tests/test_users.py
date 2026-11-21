@@ -1,9 +1,18 @@
-import pytest
 from uuid import uuid4
 
-from pages.users_page import UsersPage
+import pytest
+
 from pages.users_create_page import UserCreatePage
 from pages.users_edit_page import UsersEditPage
+from pages.users_page import UsersPage
+
+
+def create_user(users_page, create_page, email, first_name, last_name):
+    users_page.open_page()
+    users_page.open_create_form()
+
+    create_page.fill_user_form(email, first_name, last_name)
+    create_page.save_user()
 
 
 @pytest.mark.smoke
@@ -44,17 +53,13 @@ def test_user_can_be_created(logged_in_user, base_url):
     create_page = UserCreatePage(logged_in_user)
 
     email = f"test_{uuid4()}@example.com"
-    first_name = "Test"
-    last_name = "User"
+
+    create_user(users_page, create_page, email, "Test", "User")
 
     users_page.open_page()
-    users_page.open_create_form()
 
-    create_page.fill_user_form(email, first_name, last_name)
-    create_page.save_user()
-
-    users_page.open_page()
     assert users_page.user_is_in_table(email)
+
 
 @pytest.mark.smoke
 def test_user_can_be_edited(logged_in_user, base_url):
@@ -66,11 +71,7 @@ def test_user_can_be_edited(logged_in_user, base_url):
     first_name = "Test"
     last_name = "User"
 
-    users_page.open_page()
-    users_page.open_create_form()
-
-    create_page.fill_user_form(email, first_name, last_name)
-    create_page.save_user()
+    create_user(users_page, create_page, email, first_name, last_name)
 
     users_page.open_page()
     users_page.open_edit_form(email)
@@ -86,12 +87,13 @@ def test_user_can_be_edited(logged_in_user, base_url):
     edit_page.update_user(
         updated_email,
         updated_first_name,
-        updated_last_name
+        updated_last_name,
     )
     edit_page.save_user()
 
     assert users_page.page_is_opened()
     assert users_page.user_is_in_table(updated_email)
+
 
 @pytest.mark.smoke
 def test_user_email_validation(logged_in_user, base_url):
@@ -101,11 +103,7 @@ def test_user_email_validation(logged_in_user, base_url):
 
     email = f"test_{uuid4()}@example.com"
 
-    users_page.open_page()
-    users_page.open_create_form()
-
-    create_page.fill_user_form(email, "Test", "User")
-    create_page.save_user()
+    create_user(users_page, create_page, email, "Test", "User")
 
     users_page.open_page()
     users_page.open_edit_form(email)
@@ -116,6 +114,7 @@ def test_user_email_validation(logged_in_user, base_url):
     assert edit_page.email_is_invalid()
     assert edit_page.email_error_is_displayed()
 
+
 @pytest.mark.smoke
 def test_user_can_be_deleted(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
@@ -123,11 +122,7 @@ def test_user_can_be_deleted(logged_in_user, base_url):
 
     email = f"test_{uuid4()}@example.com"
 
-    users_page.open_page()
-    users_page.open_create_form()
-
-    create_page.fill_user_form(email, "Test", "Delete")
-    create_page.save_user()
+    create_user(users_page, create_page, email, "Test", "Delete")
 
     users_page.open_page()
 
@@ -139,6 +134,7 @@ def test_user_can_be_deleted(logged_in_user, base_url):
     assert users_page.deletion_notification_is_displayed("Element deleted")
     assert users_page.user_is_not_in_table(email)
 
+
 @pytest.mark.smoke
 def test_multiple_users_can_be_deleted(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
@@ -147,17 +143,8 @@ def test_multiple_users_can_be_deleted(logged_in_user, base_url):
     first_email = f"test_{uuid4()}@example.com"
     second_email = f"test_{uuid4()}@example.com"
 
-    users_page.open_page()
-
-    users_page.open_create_form()
-    create_page.fill_user_form(first_email, "First", "User")
-    create_page.save_user()
-
-    users_page.open_page()
-
-    users_page.open_create_form()
-    create_page.fill_user_form(second_email, "Second", "User")
-    create_page.save_user()
+    create_user(users_page, create_page, first_email, "First", "User")
+    create_user(users_page, create_page, second_email, "Second", "User")
 
     users_page.open_page()
 
@@ -169,12 +156,11 @@ def test_multiple_users_can_be_deleted(logged_in_user, base_url):
 
     users_page.delete_selected_user()
 
-    assert users_page.deletion_notification_is_displayed(
-        "2 elements deleted"
-    )
+    assert users_page.deletion_notification_is_displayed("2 elements deleted")
 
     assert users_page.user_is_not_in_table(first_email)
     assert users_page.user_is_not_in_table(second_email)
+
 
 @pytest.mark.smoke
 def test_all_users_can_be_deleted(logged_in_user, base_url):

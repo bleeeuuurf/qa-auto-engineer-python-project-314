@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
@@ -11,29 +10,26 @@ class TaskEditPage(BasePage):
 
     updated_notification = (
         By.XPATH,
-        "//*[@role='alert' and contains(., 'Element updated')]"
+        "//*[@role='alert' and contains(., 'Element updated')]",
     )
 
     status_combobox = (
         By.XPATH,
-        "//div[contains(@class, 'MuiFormControl-root')]"
-        "[.//label[contains(., 'Status')]]//*[@role='combobox']"
+        (
+            "//div[contains(@class, 'MuiFormControl-root')]"
+            "[.//label[contains(., 'Status')]]//*[@role='combobox']"
+        ),
     )
 
     delete_button = (By.CSS_SELECTOR, 'button[aria-label="Delete"]')
 
-    deleted_notification = (
-        By.XPATH,
-        "//*[@role='alert' and contains(., 'deleted')]"
-    )
+    deleted_notification = (By.XPATH, "//*[@role='alert' and contains(., 'deleted')]")
 
     def title_is_displayed(self):
         return self.is_element_visible(self.title_input)
 
     def get_title(self):
-        return self.find_visible_element(
-            self.title_input
-        ).get_attribute("value")
+        return self.find_visible_element(self.title_input).get_attribute("value")
 
     def clear_field(self, locator):
         field = self.find_visible_element(locator)
@@ -60,8 +56,7 @@ class TaskEditPage(BasePage):
 
         option_locator = (
             By.XPATH,
-            f"//li[@role='option' "
-            f"and normalize-space()='{status_name}']"
+            (f"//li[@role='option' and normalize-space()='{status_name}']"),
         )
 
         self.click_element(option_locator)
