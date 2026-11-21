@@ -1,11 +1,9 @@
-import pytest
 from conftest import PASSWORD, USERNAME
 
 from pages.dashboard_page import DashboardPage
 from pages.login_page import LoginPage
 
 
-@pytest.mark.smoke
 def test_success_login(browser, base_url):
     login_page = LoginPage(browser, base_url)
     dashboard_page = DashboardPage(browser)
@@ -16,7 +14,6 @@ def test_success_login(browser, base_url):
     assert dashboard_page.page_is_opened()
 
 
-@pytest.mark.smoke
 def test_success_logout(logged_in_user):
     dashboard_page = DashboardPage(logged_in_user)
     login_page = LoginPage(logged_in_user)

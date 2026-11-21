@@ -1,7 +1,5 @@
 from uuid import uuid4
 
-import pytest
-
 from pages.label_create_page import LabelCreatePage
 from pages.label_edit_page import LabelEditPage
 from pages.labels_page import LabelsPage
@@ -17,7 +15,6 @@ def create_label(labels_page, create_page, label_name):
     assert create_page.creation_notification_is_displayed()
 
 
-@pytest.mark.smoke
 def test_labels_page_is_opened(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
 
@@ -26,7 +23,6 @@ def test_labels_page_is_opened(logged_in_user, base_url):
     assert labels_page.table_is_loaded()
 
 
-@pytest.mark.smoke
 def test_label_create_form_is_opened(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
     create_page = LabelCreatePage(logged_in_user)
@@ -37,7 +33,6 @@ def test_label_create_form_is_opened(logged_in_user, base_url):
     assert create_page.name_is_displayed()
 
 
-@pytest.mark.smoke
 def test_label_can_be_created(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
     create_page = LabelCreatePage(logged_in_user)
@@ -51,7 +46,6 @@ def test_label_can_be_created(logged_in_user, base_url):
     assert labels_page.label_is_in_table(label_name)
 
 
-@pytest.mark.smoke
 def test_labels_table_displays_all_labels(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
 
@@ -61,7 +55,6 @@ def test_labels_table_displays_all_labels(logged_in_user, base_url):
     assert labels_page.names_are_displayed()
 
 
-@pytest.mark.smoke
 def test_label_can_be_edited(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
     create_page = LabelCreatePage(logged_in_user)
@@ -84,7 +77,6 @@ def test_label_can_be_edited(logged_in_user, base_url):
     assert labels_page.label_is_in_table(updated_label_name)
 
 
-@pytest.mark.smoke
 def test_label_can_be_deleted(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
     create_page = LabelCreatePage(logged_in_user)
@@ -104,7 +96,6 @@ def test_label_can_be_deleted(logged_in_user, base_url):
     assert labels_page.label_is_not_in_table(label_name)
 
 
-@pytest.mark.smoke
 def test_multiple_labels_can_be_deleted(logged_in_user, base_url):
     labels_page = LabelsPage(logged_in_user, base_url)
     create_page = LabelCreatePage(logged_in_user)

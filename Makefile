@@ -7,6 +7,3 @@ start:
 
 test:
 	APP_BASE_URL=$(APP_BASE_URL) uv run pytest
-
-test-smoke:
-	APP_BASE_URL=$(APP_BASE_URL) uv run pytest -m smoke

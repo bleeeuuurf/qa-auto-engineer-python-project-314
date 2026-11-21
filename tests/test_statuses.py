@@ -1,7 +1,5 @@
 from uuid import uuid4
 
-import pytest
-
 from pages.task_status_create_page import TaskStatusCreatePage
 from pages.task_status_edit_page import TaskStatusEditPage
 from pages.task_statuses_page import TaskStatusesPage
@@ -17,7 +15,6 @@ def create_status(statuses_page, create_page, name, slug):
     assert create_page.creation_notification_is_displayed()
 
 
-@pytest.mark.smoke
 def test_statuses_page_is_opened(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
 
@@ -26,7 +23,6 @@ def test_statuses_page_is_opened(logged_in_user, base_url):
     assert statuses_page.table_is_loaded()
 
 
-@pytest.mark.smoke
 def test_status_create_form_is_opened(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
     create_page = TaskStatusCreatePage(logged_in_user)
@@ -38,7 +34,6 @@ def test_status_create_form_is_opened(logged_in_user, base_url):
     assert create_page.slug_is_displayed()
 
 
-@pytest.mark.smoke
 def test_status_can_be_created(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
     create_page = TaskStatusCreatePage(logged_in_user)
@@ -53,7 +48,6 @@ def test_status_can_be_created(logged_in_user, base_url):
     assert statuses_page.status_is_in_table(name, slug)
 
 
-@pytest.mark.smoke
 def test_statuses_table_displays_name_and_slug(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
 
@@ -64,7 +58,6 @@ def test_statuses_table_displays_name_and_slug(logged_in_user, base_url):
     assert statuses_page.slugs_are_displayed()
 
 
-@pytest.mark.smoke
 def test_status_can_be_edited(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
     create_page = TaskStatusCreatePage(logged_in_user)
@@ -95,7 +88,6 @@ def test_status_can_be_edited(logged_in_user, base_url):
     assert statuses_page.status_is_in_table(updated_name, updated_slug)
 
 
-@pytest.mark.smoke
 def test_status_can_be_deleted(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
     create_page = TaskStatusCreatePage(logged_in_user)
@@ -121,7 +113,6 @@ def test_status_can_be_deleted(logged_in_user, base_url):
     assert statuses_page.status_is_not_in_table(status_name)
 
 
-@pytest.mark.smoke
 def test_multiple_statuses_can_be_deleted(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
     create_page = TaskStatusCreatePage(logged_in_user)
@@ -148,7 +139,6 @@ def test_multiple_statuses_can_be_deleted(logged_in_user, base_url):
         assert statuses_page.status_is_not_in_table(name)
 
 
-@pytest.mark.smoke
 def test_all_statuses_can_be_deleted(logged_in_user, base_url):
     statuses_page = TaskStatusesPage(logged_in_user, base_url)
 

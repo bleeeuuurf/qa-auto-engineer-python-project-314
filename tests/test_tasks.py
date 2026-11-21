@@ -1,7 +1,5 @@
 from uuid import uuid4
 
-import pytest
-
 from pages.task_create_page import TaskCreatePage
 from pages.task_edit_page import TaskEditPage
 from pages.tasks_page import TasksPage
@@ -19,7 +17,6 @@ def create_task(tasks_page, create_page, task_title):
     assert create_page.creation_notification_is_displayed()
 
 
-@pytest.mark.smoke
 def test_task_create_form_is_opened(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
     create_page = TaskCreatePage(logged_in_user)
@@ -32,7 +29,6 @@ def test_task_create_form_is_opened(logged_in_user, base_url):
     assert create_page.status_is_displayed()
 
 
-@pytest.mark.smoke
 def test_task_can_be_created(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
     create_page = TaskCreatePage(logged_in_user)
@@ -62,7 +58,6 @@ def test_task_can_be_created(logged_in_user, base_url):
     assert tasks_page.task_is_in_column(task_title, status_id)
 
 
-@pytest.mark.smoke
 def test_tasks_board_displays_all_tasks(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
 
@@ -73,7 +68,6 @@ def test_tasks_board_displays_all_tasks(logged_in_user, base_url):
     assert tasks_page.task_cards_have_titles()
 
 
-@pytest.mark.smoke
 def test_tasks_can_be_filtered_by_assignee(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
 
@@ -88,7 +82,6 @@ def test_tasks_can_be_filtered_by_assignee(logged_in_user, base_url):
     assert tasks_page.tasks_are_displayed()
 
 
-@pytest.mark.smoke
 def test_tasks_can_be_filtered_by_status(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
 
@@ -103,7 +96,6 @@ def test_tasks_can_be_filtered_by_status(logged_in_user, base_url):
     assert tasks_page.tasks_are_in_status(status_name)
 
 
-@pytest.mark.smoke
 def test_tasks_can_be_filtered_by_label(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
 
@@ -118,7 +110,6 @@ def test_tasks_can_be_filtered_by_label(logged_in_user, base_url):
     assert tasks_page.tasks_are_displayed()
 
 
-@pytest.mark.smoke
 def test_task_can_be_edited(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
     create_page = TaskCreatePage(logged_in_user)
@@ -145,7 +136,6 @@ def test_task_can_be_edited(logged_in_user, base_url):
     assert tasks_page.task_is_displayed(updated_title)
 
 
-@pytest.mark.smoke
 def test_task_can_be_moved_to_another_status(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
     create_page = TaskCreatePage(logged_in_user)
@@ -183,7 +173,6 @@ def test_task_can_be_moved_to_another_status(logged_in_user, base_url):
     assert tasks_page.task_is_displayed(task_title)
 
 
-@pytest.mark.smoke
 def test_task_can_be_deleted(logged_in_user, base_url):
     tasks_page = TasksPage(logged_in_user, base_url)
     create_page = TaskCreatePage(logged_in_user)

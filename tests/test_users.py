@@ -1,7 +1,5 @@
 from uuid import uuid4
 
-import pytest
-
 from pages.users_create_page import UserCreatePage
 from pages.users_edit_page import UsersEditPage
 from pages.users_page import UsersPage
@@ -15,7 +13,6 @@ def create_user(users_page, create_page, email, first_name, last_name):
     create_page.save_user()
 
 
-@pytest.mark.smoke
 def test_users_page_is_opened(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
 
@@ -24,7 +21,6 @@ def test_users_page_is_opened(logged_in_user, base_url):
     assert users_page.page_is_opened()
 
 
-@pytest.mark.smoke
 def test_users_table_is_loaded(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
 
@@ -33,7 +29,6 @@ def test_users_table_is_loaded(logged_in_user, base_url):
     assert users_page.table_is_loaded()
 
 
-@pytest.mark.smoke
 def test_user_create_form_is_opened(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
     create_page = UserCreatePage(logged_in_user)
@@ -47,7 +42,6 @@ def test_user_create_form_is_opened(logged_in_user, base_url):
     assert create_page.last_name_is_displayed()
 
 
-@pytest.mark.smoke
 def test_user_can_be_created(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
     create_page = UserCreatePage(logged_in_user)
@@ -61,7 +55,6 @@ def test_user_can_be_created(logged_in_user, base_url):
     assert users_page.user_is_in_table(email)
 
 
-@pytest.mark.smoke
 def test_user_can_be_edited(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
     create_page = UserCreatePage(logged_in_user)
@@ -95,7 +88,6 @@ def test_user_can_be_edited(logged_in_user, base_url):
     assert users_page.user_is_in_table(updated_email)
 
 
-@pytest.mark.smoke
 def test_user_email_validation(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
     create_page = UserCreatePage(logged_in_user)
@@ -115,7 +107,6 @@ def test_user_email_validation(logged_in_user, base_url):
     assert edit_page.email_error_is_displayed()
 
 
-@pytest.mark.smoke
 def test_user_can_be_deleted(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
     create_page = UserCreatePage(logged_in_user)
@@ -135,7 +126,6 @@ def test_user_can_be_deleted(logged_in_user, base_url):
     assert users_page.user_is_not_in_table(email)
 
 
-@pytest.mark.smoke
 def test_multiple_users_can_be_deleted(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
     create_page = UserCreatePage(logged_in_user)
@@ -162,7 +152,6 @@ def test_multiple_users_can_be_deleted(logged_in_user, base_url):
     assert users_page.user_is_not_in_table(second_email)
 
 
-@pytest.mark.smoke
 def test_all_users_can_be_deleted(logged_in_user, base_url):
     users_page = UsersPage(logged_in_user, base_url)
 
