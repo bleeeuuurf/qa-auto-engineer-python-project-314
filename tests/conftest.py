@@ -2,13 +2,19 @@ import os
 
 import pytest
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 from pages.login_page import LoginPage
 
 
 @pytest.fixture
 def browser():
-    driver = webdriver.Chrome()
+    options = Options()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--incognito")
+
+    driver = webdriver.Chrome(options=options)
     yield driver
     driver.quit()
 
@@ -19,7 +25,7 @@ def base_url():
 
 
 USERNAME = "test_username"
-PASSWORD = "test_passworf"
+PASSWORD = "test_password"
 
 
 @pytest.fixture
