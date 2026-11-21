@@ -2,27 +2,62 @@
 
 [![hexlet-check](https://github.com/bleeeuuurf/qa-auto-engineer-python-project-314/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/bleeeuuurf/qa-auto-engineer-python-project-314/actions)
 
-Напишите тесты для проверки работы приложения
+Task Manager напоминает знакомые трекеры вроде Redmine: в системе есть пользователи, статусы, метки и задачи. Каждая задача привязана к статусу (колонке доски) и исполнителю, а работа строится вокруг перемещения карточек между этапами. Приложение развёрнуто в Docker-образе и доступно как SPA без отдельного бэкенда — все проверки выполняются на уровне клиентского интерфейса.
 
 Учебный проект Хекслета: https://ru.hexlet.io/programs/qa-auto-engineer-python
 
 
 ## Стек
 
-- Python
+- Python 3.13
+- Selenium WebDriver
+- Pytest
+- Ruff
+- uv
+- Docker
 
 ## Установка
 
-<!-- Опишите установку: клонирование, зависимости, переменные окружения -->
+Клонируйте репозиторий
 
 ```bash
 git clone https://github.com/bleeeuuurf/qa-auto-engineer-python-project-314.git
 cd qa-auto-engineer-python-project-314
 ```
 
-## Использование
+Установите зависимости
 
-<!-- Добавьте примеры запуска и запись asciinema — именно это смотрит работодатель -->
+```bash
+uv sync
+```
+
+## Запуск приложения
+
+Запустите приложение в Docker
+
+```bash
+make start
+```
+
+Приложение будет доступно по адресу  http://localhost:5173
+
+## Запуск тестов
+
+```bash
+make test
+```
+
+## Структура проекта
+
+- pages/ — Page Objects, содержащие логику взаимодействия со страницами приложения.
+- tests/ — автоматизированные тесты.
+- tests/conftest.py — фикстуры и общие настройки Pytest.
+- Makefile — команды запуска приложения и тестов.
+- pyproject.toml — настройки проекта и зависимости.
+
+## Использование, запись примера
+
+https://asciinema.org/a/qGY6YDwMAHaGNd0m
 
 ---
 
