@@ -1,9 +1,10 @@
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+from pages.base_page import BasePage
 
 
-class LabelCreatePage:
+class LabelCreatePage(BasePage):
     name_input = (By.NAME, "name")
     save_button = (By.CSS_SELECTOR, 'button[aria-label="Save"]')
 
@@ -12,27 +13,14 @@ class LabelCreatePage:
         "//*[@role='alert' and contains(., 'Element created')]"
     )
 
-    def __init__(self, browser):
-        self.browser = browser
-
     def name_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.name_input)
-        ).is_displayed()
+        return self.is_element_visible(self.name_input)
 
     def fill_label_form(self, name):
-        WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.name_input)
-        ).send_keys(name)
+        self.enter_text(self.name_input, name)
 
     def save_label(self):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.save_button)
-        ).click()
+        self.click_element(self.save_button)
 
     def creation_notification_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(
-                self.created_notification
-            )
-        ).is_displayed()
+        return self.is_element_visible(self.created_notification)

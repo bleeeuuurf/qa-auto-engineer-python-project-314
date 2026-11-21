@@ -1,9 +1,10 @@
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+from pages.base_page import BasePage
 
 
-class TaskStatusCreatePage:
+class TaskStatusCreatePage(BasePage):
     name_input = (By.NAME, "name")
     slug_input = (By.NAME, "slug")
     created_at_input = (By.NAME, "createdAt")
@@ -14,41 +15,21 @@ class TaskStatusCreatePage:
         "//*[@role='alert' and contains(., 'Element created')]"
     )
 
-    def __init__(self, browser):
-        self.browser = browser
-
     def name_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.name_input)
-        ).is_displayed()
+        return self.is_element_visible(self.name_input)
 
     def slug_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.slug_input)
-        ).is_displayed()
+        return self.is_element_visible(self.slug_input)
 
     def created_at_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.created_at_input)
-        ).is_displayed()
+        return self.is_element_visible(self.created_at_input)
 
     def fill_status_form(self, name, slug):
-        WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.name_input)
-        ).send_keys(name)
-
-        WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.slug_input)
-        ).send_keys(slug)
+        self.enter_text(self.name_input, name)
+        self.enter_text(self.slug_input, slug)
 
     def save_status(self):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.save_button)
-        ).click()
+        self.click_element(self.save_button)
 
     def creation_notification_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(
-                self.created_notification
-            )
-        ).is_displayed()
+        return self.is_element_visible(self.created_notification)

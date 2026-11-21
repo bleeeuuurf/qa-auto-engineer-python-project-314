@@ -1,71 +1,62 @@
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+from pages.base_page import BasePage
 
 
-class TaskEditPage:
+class TaskEditPage(BasePage):
     title_input = (By.NAME, "title")
     save_button = (By.CSS_SELECTOR, 'button[aria-label="Save"]')
 
-    updated_notification = (By.XPATH,"//*[@role='alert' and contains(., 'Element updated')]")
-    status_combobox = (By.XPATH,"//div[contains(@class, 'MuiFormControl-root')][.//label[contains(., 'Status')]]//*[@role='combobox']")
+    updated_notification = (
+        By.XPATH,
+        "//*[@role='alert' and contains(., 'Element updated')]"
+    )
+
+    status_combobox = (
+        By.XPATH,
+        "//div[contains(@class, 'MuiFormControl-root')]"
+        "[.//label[contains(., 'Status')]]//*[@role='combobox']"
+    )
 
     delete_button = (By.CSS_SELECTOR, 'button[aria-label="Delete"]')
-    deleted_notification = (By.XPATH,"//*[@role='alert' and contains(., 'deleted')]")
 
-    def __init__(self, browser):
-        self.browser = browser
+    deleted_notification = (
+        By.XPATH,
+        "//*[@role='alert' and contains(., 'deleted')]"
+    )
 
     def title_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.title_input)
-        ).is_displayed()
+        return self.is_element_visible(self.title_input)
 
     def get_title(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.title_input)
+        return self.find_visible_element(
+            self.title_input
         ).get_attribute("value")
 
     def clear_field(self, locator):
-        field = WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(locator)
-        )
+        field = self.find_visible_element(locator)
 
         field.click()
         field.send_keys(Keys.HOME)
         field.send_keys(Keys.SHIFT, Keys.END)
         field.send_keys(Keys.BACKSPACE)
 
-        WebDriverWait(self.browser, 5).until(
-            lambda browser: field.get_attribute("value") == ""
-        )
+        self.wait_for_field_to_be_empty(field)
 
     def update_title(self, new_title):
         self.clear_field(self.title_input)
-
-        field = WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.title_input)
-        )
-        field.send_keys(new_title)
+        self.enter_text(self.title_input, new_title)
 
     def save_task(self):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.save_button)
-        ).click()
+        self.click_element(self.save_button)
 
     def update_notification_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(
-                self.updated_notification
-            )
-        ).is_displayed()
+        return self.is_element_visible(self.updated_notification)
 
     def select_status(self, status_name):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.status_combobox)
-        ).click()
+        self.click_element(self.status_combobox)
 
         option_locator = (
             By.XPATH,
@@ -73,39 +64,10 @@ class TaskEditPage:
             f"and normalize-space()='{status_name}']"
         )
 
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(option_locator)
-        ).click()
-
-    def select_filter_option_by_name(self, filter_locator, option_name):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(filter_locator)
-        ).click()
-
-        option_locator = (
-            By.XPATH,
-            f"//li[@role='option' "
-            f"and normalize-space()='{option_name}']"
-        )
-
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(option_locator)
-        ).click()
-
-    def filter_by_status(self, status_name):
-        self.select_filter_option_by_name(
-            self.status_filter,
-            status_name
-        )
+        self.click_element(option_locator)
 
     def delete_task(self):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.delete_button)
-        ).click()
+        self.click_element(self.delete_button)
 
     def deletion_notification_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(
-                self.deleted_notification
-            )
-        ).is_displayed()
+        return self.is_element_visible(self.deleted_notification)

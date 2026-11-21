@@ -1,9 +1,10 @@
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+from pages.base_page import BasePage
 
 
-class TaskCreatePage:
+class TaskCreatePage(BasePage):
     title_input = (By.NAME, "title")
 
     assignee_combobox = (
@@ -25,39 +26,27 @@ class TaskCreatePage:
         "//*[@role='alert' and contains(., 'Element created')]"
     )
 
-    def __init__(self, browser):
-        self.browser = browser
-
     def title_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.title_input)
-        ).is_displayed()
+        return self.is_element_visible(self.title_input)
 
     def assignee_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.assignee_combobox)
-        ).is_displayed()
+        return self.is_element_visible(self.assignee_combobox)
 
     def status_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.status_combobox)
-        ).is_displayed()
+        return self.is_element_visible(self.status_combobox)
 
     def fill_title(self, title):
-        WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(self.title_input)
-        ).send_keys(title)
+        self.enter_text(self.title_input, title)
 
     def select_first_option(self, locator):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(locator)
-        ).click()
+        self.click_element(locator)
 
-        first_option = WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(
-                (By.CSS_SELECTOR, '[role="option"]')
-            )
+        option_locator = (
+            By.CSS_SELECTOR,
+            '[role="option"]'
         )
+
+        first_option = self.find_visible_element(option_locator)
 
         option_text = first_option.text.strip()
         option_value = first_option.get_attribute("data-value")
@@ -73,21 +62,13 @@ class TaskCreatePage:
         return self.select_first_option(self.status_combobox)
 
     def save_task(self):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.save_button)
-        ).click()
+        self.click_element(self.save_button)
 
     def creation_notification_is_displayed(self):
-        return WebDriverWait(self.browser, 5).until(
-            EC.visibility_of_element_located(
-                self.created_notification
-            )
-        ).is_displayed()
+        return self.is_element_visible(self.created_notification)
 
     def select_status_by_name(self, status_name):
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(self.status_combobox)
-        ).click()
+        self.click_element(self.status_combobox)
 
         option_locator = (
             By.XPATH,
@@ -95,6 +76,4 @@ class TaskCreatePage:
             f"and normalize-space()='{status_name}']"
         )
 
-        WebDriverWait(self.browser, 5).until(
-            EC.element_to_be_clickable(option_locator)
-        ).click()
+        self.click_element(option_locator)
