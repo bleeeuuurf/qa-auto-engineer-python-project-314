@@ -10,9 +10,13 @@ from pages.login_page import LoginPage
 @pytest.fixture
 def browser():
     options = Options()
+
+    if os.getenv("CI"):
+        options.add_argument("--headless=new")
+        options.add_argument("--window-size=1920,1080")
+
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--incognito")
 
     driver = webdriver.Chrome(options=options)
     yield driver
@@ -24,8 +28,8 @@ def base_url():
     return os.getenv("APP_BASE_URL", "http://localhost:5173").rstrip("/")
 
 
-USERNAME = "test_username"
-PASSWORD = "test_password"
+USERNAME = "test_username_without_error_0303003"
+PASSWORD = "test_username_without_error_0303003"
 
 
 @pytest.fixture
