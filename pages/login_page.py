@@ -16,7 +16,6 @@ class LoginPage(BasePage):
         self.enter_text(self.username_input, username)
         self.enter_text(self.password_input, password)
         self.click_element(self.sign_in_button)
-
         self.find_visible_element(self.users_menu_item)
 
     def username_is_displayed(self):
