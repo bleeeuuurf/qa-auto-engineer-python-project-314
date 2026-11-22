@@ -10,9 +10,8 @@ from pages.login_page import LoginPage
 @pytest.fixture
 def browser():
     options = Options()
-    print("CI =", os.getenv("CI"))
 
-    if os.getenv("CI") == "true":
+    if os.getenv("TEST_LOG_DIR"):
         options.add_argument("--headless=new")
 
     options.add_argument("--no-sandbox")
